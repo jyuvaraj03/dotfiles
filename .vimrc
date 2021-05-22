@@ -62,3 +62,4 @@ imap <expr> <leader><tab> emmet#expandAbbrIntelligent("\<tab>")
 nnoremap <C-_> :call NERDComment(0,"toggle")<CR>
 vnoremap <C-_> :call NERDComment(0,"toggle")<CR>
 inoremap <C-_> :call NERDComment(0,"toggle")<CR>
+nnoremap <silent> b :YcmCompleter GoTo<CR>
