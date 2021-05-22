@@ -21,7 +21,7 @@ if [[ `git status --porcelain` ]]; then
   # push to Github
   git add .;
   git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
-  git push origin master
+  git push origin main
 fi
 
 exit 0
