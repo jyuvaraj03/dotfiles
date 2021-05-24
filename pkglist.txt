@@ -38,6 +38,7 @@ gnome-disk-utility
 gopass
 gparted
 grub
+gvim
 gwenview
 htop
 inetutils
@@ -127,7 +128,6 @@ terminator
 timeshift
 transmission-qt
 unzip
-vim
 virtualbox
 virtualbox-ext-oracle
 vlc
