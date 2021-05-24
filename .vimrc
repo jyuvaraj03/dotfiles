@@ -76,9 +76,8 @@ vnoremap Y "+y
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <silent> <leader>f :Files<CR>
-" Alt + Shift + F to use Rgrep
-nnoremap <silent> F :Rg<CR>
+nnoremap <silent> <leader>f :GFiles<CR>
+nnoremap <silent> ff :Rg<CR>
 imap jk <Esc>
 imap <expr> <leader><tab> emmet#expandAbbrIntelligent("\<tab>")
 noremap <C-_> :call NERDComment(0,"toggle")<CR>
