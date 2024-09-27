@@ -1,0 +1,259 @@
+{:default true
+
+
+ :modifiers {;
+             :super-hyper [:command :shift :control :option :fn]
+             :hyper [:command :shift :control :option]
+             :cos [:command :shift :option]
+             :cst [:command :shift :control]
+             :co [:command :option]
+             :cs [:command :shift]
+             :ct [:command :control]
+             :to [:control :option]
+             :ts [:control :shift]
+             :os [:option :shift]
+             ;
+             }
+ :froms {;alias
+         }
+
+ :tos {;
+ 	:delete {:key :delete_or_backspace}
+       :return {:key :return_or_enter}
+       :tilde {:key :grave_accent_and_tilde}
+
+       ;shortcuts
+       :autocomplete {:key :spacebar :modi :control} ;!Tspacebar
+       :command_palette {:key :t :modi :command}
+       
+       :cursor_find_match {:key :d :modi :command}
+       :cursor_above {:key :up_arrow :modi :co}
+       :cursor_below {:key :down_arrow :modi :co}
+       :acejump {:key :j :modi :cos}
+       :acejump_line {:key :l :modi :cos}
+       :acejump_selection {:key :s :modi :cos}
+       :acejump_multi {:key :m :modi :cos}
+       
+       
+       :delete_line {:key :k :modi :cs} ;!CSk
+
+       :find_in_project {:key :f :modi :cs} ;!CSf
+
+       :focus_git {:key :g :modi :ts} ;!TSg
+       :focus_editor {:key :e :modi :control}
+       :focus_explorer {:key :e :modi :cos} ;:!CSOe
+       :focus_terminal {:key :j :modi :command}
+       :new_terminal {:key :grave_accent_and_tilde :modi :ts}; !TS`
+       
+       :open_next_editor {:key :right_arrow :modi :co}
+       :open_prev_editor {:key :left_arrow :modi :co}
+       :go_back {:key :hyphen :modi :control}
+       :go_forward {:key :hyphen :modi :ts}
+       
+       :replace {:key :f :mode :co}
+       
+       :split_window {:key :backslash :modi :command}; !Cbackslash
+
+       :toggle_sidebar {:key :b :modi :command} ;!Cb
+
+       :expand_selection {:key :right_arrow :modi :cst}
+       :shrink_selection {:key :left_arrow :modi :cst}
+
+       :go_to_file {:key :p :modi :command}
+       :insert_line_below {:key :return_or_enter :modi :command} ;!Creturn_or_enter
+       :insert_line_above {:key :return_or_enter :modi :cs} ;!Creturn_or_enter
+       :wrap_emmet {:key :p :modi :hyper}
+
+       ;named symbols
+       :open_brace {:key :open_bracket :modi :shift}
+       :close_brace {:key :close_bracket :modi :shift}
+
+       :open_paren {:key :9 :modi :shift}
+       :close_paren {:key :0 :modi :shift}
+
+       :less_than {:key :comma :modi :shift}
+       :greater_than {:key :period :modi :shift}
+
+       ;chrome
+       :open_dev_tools {:key :i :modi :co} ;:!COl
+       :chrome_full_screen {:key :f :modi :ct}
+       :focus_omnibar {:key :l :modi :command}
+
+       }
+ 
+ :applications {;
+
+                :webstorm ["com.jetbrains.Webstorm"]
+                ;
+                }
+; Layers Are Typically "Thumb Keys" or "Pinky Keys"
+ :layers {;
+          ;
+          }
+ :simlayers {;
+             :alt-mode {:key :a}
+             :alt-shift-mode {:key :s}
+             :d-mode {:key :d}
+             :movement-mode {:key :f}
+             :cursor-mode {:key :g}
+             :delete-mode {:key :j}
+             :spacebar-mode {:key :spacebar}
+ ;
+             }
+ :main [;
+        
+        {:des "chrome"
+         :rules [:chrome
+                 [:left_command :left_command nil {:alone [:!Ct]}]
+                 [:left_option :left_option nil {:alone [:!Cw]}]
+                 [:right_option :focus_omnibar]
+                 [:right_control :left_option nil {:alone [:!CSt]}]
+                ;;  [:-d :open_dev_tools]
+
+                 ]}
+
+        {:des "delete"
+         :rules [:delete-mode
+                 [:hyphen :!Cdelete_or_backspace]
+                 [:a :!Odelete_or_backspace]
+                 [:s :delete_or_backspace]
+                 [:d :delete_forward]
+                 [:f :!Odelete_forward]
+                 [:g :!Cdelete_forward]
+
+                 ;
+                 ]}
+
+        {:des "homerow movement"
+
+         :rules [:movement-mode
+                 [:##y :!Cleft_arrow]
+                 [:##o :!Cright_arrow]
+
+                 [:##h :left_arrow]
+                 [:##j :down_arrow]
+                 [:##k :up_arrow]
+                 [:##l :right_arrow]
+
+                 [:semicolon :autocomplete]
+
+                 [:return_or_enter :insert_line_below]
+
+
+
+
+                 ;
+                 ]}
+
+        {:des "homerow alt+shift"
+         :rules [:alt-shift-mode
+                 [:##h :!OSleft_arrow]
+                 [:##j :!OSdown_arrow]
+                 [:##k :!OSup_arrow]
+                 [:##l :!OSright_arrow]
+
+                 ;
+                 ]}
+
+        {:des "homerow shift"
+         :rules [:d-mode
+                 [:##y :!Shome]
+                 [:##o :!Send]
+
+                 [:##h :!Sleft_arrow]
+                 [:##j :!Sdown_arrow]
+                 [:##k :!Sup_arrow]
+                 [:##l :!Sright_arrow]
+
+                 ;
+                 ]}
+        {:des "homerow alt"
+         :rules [:alt-mode
+                 [:##y :home]
+
+                 [:##o :end]
+
+                 [:##h :!Oleft_arrow]
+                 [:##j :!Odown_arrow]
+                 [:##k :!Oup_arrow]
+                 [:##l :!Oright_arrow]
+                 ;
+                 ]}
+
+        {:des "spacebar"
+         :rules [:spacebar-mode
+                 ;symbols [](){}<>
+                 [:a :open_bracket]
+                 [:s :close_bracket]
+
+                 [:d :open_paren]
+                 [:f :close_paren]
+
+                 [:j :open_brace]
+                 [:k :close_brace]
+
+                 [:l :less_than]
+                 [:semicolon :greater_than]
+
+                 ;symbol sequences
+                 [:left_shift [:spacebar :equal_sign :spacebar]]; =  =  =  =  =  =  =  =  =  =
+                 [:q [:!S9 :!S0 :equal_sign :greater_than :spacebar]];()=> 
+                 [:e [:!S9 :!S9 :!S0 :equal_sign :greater_than :spacebar :open_brace :close_brace :!S0 :left_arrow :left_arrow]];(()=> {})
+
+                 [:g [:spacebar :equal_sign :greater_than :spacebar]]; =>  => ={} =""
+                 [:h [:equal_sign :open_brace :close_brace :left_arrow]];={}
+                 [:b [:equal_sign :open_brace :close_brace :left_arrow]];={}
+                 [:quote [:equal_sign :!Squote :!Squote :left_arrow]];=""
+
+
+                 ;macros
+
+
+                 ;
+                 ]}
+
+;
+        ]}
+        
+
+
+        ;; I like the idea behind "modes" when slamming down a few keys at the same time, but never landed on something I like
+        ;; {:des "chords"
+        ;;  :rules [;
+        ;;         [{:sim [:a :s :d :f] :simo {:interrupt false
+        ;;                                      :dorder :insensitive
+        ;;                                      :uorder :insensitive
+        ;;                                      }} {:set ["asdmovement-mode" 1]}]
+
+        ;;          :asdmovement-mode
+        ;;          [:c [:c :o :n :s :o :l :e ] nil {:afterup {:set ["asdmovement-mode" 0]}}]
+
+        ;;          ;
+        ;;          ]
+        ;;  }
+
+
+        
+
+
+
+
+;; rule [:period ["media-mode" 1] nil {:afterup ["media-mode" 0] :alone :period}]
+;;       |_____| |_______________| |_| |_________________________________________|
+;;        <from>    <to>      <conditions>         <other options>
+
+    ;; !  | means mandatory
+    ;; #  | means optional
+    ;; C  | left_command
+    ;; T  | left_control
+    ;; O  | left_option
+    ;; S  | left_shift
+    ;; F  | fn
+    ;; Q  | right_command
+    ;; W  | right_control
+    ;; E  | right_option
+    ;; R  | right_shift
+    ;; 
+    ;; !! | mandatory command + control + optional + shift (hyper)
+    ;; ## | optional any
+;; 
