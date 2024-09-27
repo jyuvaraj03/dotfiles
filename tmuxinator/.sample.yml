@@ -1,7 +1,5 @@
-# /home/yuvaraj/.config/tmuxinator/groups.yml
-
-name: groups
-root: ~/projects/groups
+name: sample
+root: ~/
 
 # Optional tmux socket
 # socket_name: foo
@@ -47,24 +45,24 @@ windows:
   - main:
       layout: main-horizontal
       panes:
-        - dc bash
-        - dc bash
+        -
+        -
   - server:
       layout: main-vertical
       panes:
-        - dc bundle exec rails s -b 0.0.0.0
-        - 
+        -
+        -
   - inside:
       layout: main-horizontal
       panes:
-        - dc bash
-        - dc bash
-        - dc bash
-        - dc bash
+        -
+        -
+        -
+        -
   - outside:
       layout: main-horizontal
       panes:
-        - 
-        - 
-        - 
+        -
+        -
+        -
         -
