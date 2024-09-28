@@ -15,7 +15,6 @@ return {
     -- Snippets
     { "L3MON4D3/LuaSnip",                  build = "make install_jsregexp" }, -- Required
     { "rafamadriz/friendly-snippets" },                   -- Optional
-
     -- treesitter
   }
 }

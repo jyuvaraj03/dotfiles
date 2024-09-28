@@ -41,3 +41,22 @@ keymap("n", "<leader>,", ":Telescope buffers<CR>", opts)
 keymap("n", "<leader>sp", ":Telescope live_grep<CR>", opts)
 keymap("n", "<leader>so", ":Telescope live_grep grep_open_files=true<CR>", opts)
 keymap("n", "<leader>sh", ":Telescope help_tags<CR>", opts)
+keymap("n", "<leader>sc", ":Telescope colorscheme enable_preview=true<CR>", opts)
+keymap("n", "<leader><return>", ":Telescope resume<CR>", opts)
+
+-- tabs & windows
+-- Tabs
+keymap("n", "<return>", ":tab split<CR>", opts)
+keymap("n", "<leader>cc", ":tabclose<CR>", opts)
+keymap("n", "<leader>tm", ":tabmove<CR>", opts)
+keymap("n", "<C-h>", ":tabprevious<CR>", opts)
+keymap("n", "<C-l>", ":tabnext<CR>", opts)
+-- Windows split
+keymap("n", "<leader>wv", ":vsplit<CR>", opts)
+keymap("n", "<leader>ws", ":split<CR>", opts)
+
+-- QuickFix
+keymap("n", "[q", ":cp<CR>", opts)
+keymap("n", "]q", ":cn<CR>", opts)
+keymap("n", "qc", ":cclose<CR>", opts)
+
