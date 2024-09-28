@@ -10,5 +10,5 @@ if [ -f "$HOME/.tmux.conf" ]; then
   cp $HOME/.tmux.conf $HOME/.tmux.conf.old
 fi
 
-# Install .tmux.conf
+# Install .tmux.conf by symlinking
 cp tmux/.tmux.conf $HOME/.tmux.conf
