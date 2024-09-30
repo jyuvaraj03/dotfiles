@@ -40,7 +40,7 @@ return {
         auto_install = true,
         highlight = {
           enable = true,
-          additional_vim_regex_highlighting = true,
+          additional_vim_regex_highlighting = false,
         },
         indent = { enable = true }
       })
@@ -105,7 +105,7 @@ return {
       })
     end
   },
-  {'Exafunction/codeium.vim', event = 'BufEnter'},
+  -- {'Exafunction/codeium.vim', event = 'BufEnter'},
   { 'pocco81/auto-save.nvim', event = 'BufEnter' },
   {
     'goolord/alpha-nvim',
@@ -115,6 +115,7 @@ return {
   },
   {
     'nvim-lualine/lualine.nvim',
+    enabled = true,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('lualine').setup({

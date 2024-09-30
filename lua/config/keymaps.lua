@@ -43,6 +43,7 @@ keymap("n", "<leader>so", ":Telescope live_grep grep_open_files=true<CR>", opts)
 keymap("n", "<leader>sh", ":Telescope help_tags<CR>", opts)
 keymap("n", "<leader>sc", ":Telescope colorscheme enable_preview=true<CR>", opts)
 keymap("n", "<leader><return>", ":Telescope resume<CR>", opts)
+keymap("n", "<leader>*", ":Telescope grep_string<CR>", opts)
 
 -- tabs & windows
 -- Tabs
@@ -60,3 +61,6 @@ keymap("n", "[q", ":cp<CR>", opts)
 keymap("n", "]q", ":cn<CR>", opts)
 keymap("n", "qc", ":cclose<CR>", opts)
 
+-- File path copy
+keymap("n", "fy", ":call CopyRelativePath()<CR>", opts)
+keymap("n", "fl", ":call CopyRelativePathWithLine()<CR>", opts)
