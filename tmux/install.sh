@@ -9,7 +9,7 @@ for user in $(ls /home); do
   if [ -f "/home/$user/.tmux.conf" ]; then
     mv /home/$user/.tmux.conf /home/$user/.tmux.conf.old
   fi
-fi
+done
 
 # Install .tmux.conf by symlinking
 ln -s $(pwd)/tmux/.tmux.conf /home/$user/.tmux.conf

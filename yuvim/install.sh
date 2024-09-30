@@ -18,12 +18,3 @@ fi
 
 # Download config from github -- downloads at the home directory of whichever user is running the script
 git clone https://github.com/jyuvaraj03/yuvim.git $HOME/.config/nvim
-
-# Loop through all other normal users and install config
-for user in $(ls /home); do
-  if [ -d /home/$user/.config/nvim ]; then
-    mv /home/$user/.config/nvim /home/$user/.config/nvim.old
-  fi
-  mkdir -p /home/$user/.config
-  cp -r $HOME/.config/nvim /home/$user/.config
-done
