@@ -1,5 +1,5 @@
 source utils.sh
-sudo_cmd=get_sudo_cmd
+sudo_cmd=$(get_sudo_cmd)
 # Install dependencies
 $sudo_cmd apt-get update -y
 $sudo_cmd apt-get -y install xclip ripgrep
