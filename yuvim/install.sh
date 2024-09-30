@@ -1,8 +1,5 @@
-sudo_cmd=""
-# if sudo is available, set sudo_cmd
-if [ -x "$(command -v sudo)" ]; then
-  sudo_cmd="sudo"
-fi
+source utils.sh
+sudo_cmd=get_sudo_cmd
 # Install dependencies
 $sudo_cmd apt-get update -y
 $sudo_cmd apt-get -y install xclip ripgrep
@@ -27,4 +24,6 @@ for user in $(ls /home); do
   if [ -d /home/$user/.config/nvim ]; then
     mv /home/$user/.config/nvim /home/$user/.config/nvim.old
   fi
-
+  mkdir -p /home/$user/.config
+  cp -r $HOME/.config/nvim /home/$user/.config
+done

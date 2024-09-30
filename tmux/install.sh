@@ -1,14 +1,16 @@
-sudo_cmd=""
-if [ ! -x "$(command -v sudo)" ]; then
-  sudo_cmd="sudo"
-fi
+source utils.sh
+sudo_cmd=get_sudo_cmd
 $sudo_cmd apt-get update
 $sudo_cmd apt-get -y install tmux
 
-# Back up existing .tmux.conf
-if [ -f "$HOME/.tmux.conf" ]; then
-  cp $HOME/.tmux.conf $HOME/.tmux.conf.old
+# Loop through normal users and install config
+for user in $(ls /home); do
+  # Back up existing .tmux.conf
+  if [ -f "/home/$user/.tmux.conf" ]; then
+    mv /home/$user/.tmux.conf /home/$user/.tmux.conf.old
+  fi
 fi
 
 # Install .tmux.conf by symlinking
-cp tmux/.tmux.conf $HOME/.tmux.conf
+ln -s $(pwd)/tmux/.tmux.conf /home/$user/.tmux.conf
+cp tmux/.tmux.conf /home/$user/.tmux.conf
