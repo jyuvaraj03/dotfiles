@@ -17,4 +17,4 @@ if [ ! -x "$(command -v nvim)" ]; then
 fi
 
 # Download config from github -- downloads at the home directory of whichever user is running the script
-git clone https://github.com/jyuvaraj03/yuvim.git $HOME/.config/nvim
+git clone git@github.com:jyuvaraj03/yuvim.git $HOME/.config/nvim
