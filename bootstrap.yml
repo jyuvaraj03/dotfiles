@@ -1,0 +1,11 @@
+- name: Bootstrap development environment
+  hosts: localhost
+  roles:
+    - jetbrains-nerd-font
+    - alacritty
+    - smart-keys
+    - lazygit
+    - ruby
+    - tmuxinator
+    - tmux
+    - yuvim

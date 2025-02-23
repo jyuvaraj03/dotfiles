@@ -1,0 +1,5 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for yuvim
+nvim_config_repo: "git@github.com:jyuvaraj03/yuvim.git"
+nvim_config_path: "{{ ansible_env.HOME }}/.config/nvim"
