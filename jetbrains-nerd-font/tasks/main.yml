@@ -1,0 +1,26 @@
+- name: Download Nerd Fonts archive
+  get_url:
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip"
+    dest: /tmp/nerd-fonts.zip
+
+- name: Create font directory
+  file:
+    path: "/usr/local/share/fonts"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Extract Nerd Fonts
+  unarchive:
+    src: /tmp/nerd-fonts.zip
+    dest: "/usr/local/share/fonts"
+    remote_src: yes
+    creates: "/usr/local/share/fonts/JetBrainsMonoNerdFont-Bold.ttf"
+  become: true
+  notify:
+    - update font cache
+
+- name: Remove the zip file
+  file:
+    path: /tmp/nerd-fonts.zip
+    state: absent

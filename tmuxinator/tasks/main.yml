@@ -1,0 +1,30 @@
+#SPDX-License-Identifier: MIT-0
+# TODO: Somehow tmuxinator is not being accessible for the first without manually doing gem install tmuxinator 
+---
+- name: Check if gem is installed
+  command: command -v gem
+  register: gem_check
+  ignore_errors: true
+
+- name: Fail if gem is not installed
+  fail:
+    msg: "gem command could not be found. You may need to install gem/ruby first."
+  when: gem_check.rc != 0
+
+- name: Install tmuxinator gem
+  gem:
+    name: tmuxinator
+    state: present
+
+- name: Create .tmuxinator directory
+  file:
+    path: "{{ ansible_env.HOME }}/.tmuxinator"
+    state: directory
+    mode: '0755'
+
+- name: Copy sample config
+  copy:
+    src: files/sample.yml
+    dest: "{{ ansible_env.HOME }}/.tmuxinator/.sample.yml"
+    mode: '0644'
+    backup: true

@@ -1,0 +1,30 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for yuvim
+- name: Update dnf cache
+  dnf:
+    update_cache: yes
+  become: true
+- name: Install the 'Development tools' package group
+  dnf:
+    name: '@Development Tools'
+    state: present
+  become: true
+- name: Install required packages
+  dnf:
+    name:
+      - xclip
+      - ripgrep
+    state: present
+  become: true
+- name: Install Neovim from dnf
+  dnf:
+    name: "neovim"
+    state: present
+  become: true
+- name: Clone Neovim configuration
+  git:
+    repo: "{{ nvim_config_repo }}"
+    dest: "{{ nvim_config_path }}"
+    version: main
+    accept_hostkey: yes #add github to known hosts if not already there.
