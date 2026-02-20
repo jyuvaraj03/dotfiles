@@ -1,0 +1,15 @@
+- name: Install the 'Development tools' package group
+  ansible.builtin.dnf:
+    name: '@Development Tools'
+    state: present
+  become: true
+- name: Install Alacritty from dnf
+  ansible.builtin.dnf:
+    name: alacritty
+    state: present
+  become: true
+- name: Install alacritty.toml configs
+  copy:
+    src: "files/alacritty.toml"
+    dest: "{{ lookup('env', 'HOME') }}/.alacritty.toml"
+    backup: true

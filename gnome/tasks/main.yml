@@ -1,0 +1,64 @@
+---
+# GNOME configuration tasks
+- name: Install Pop!_OS shell extension
+  package:
+    name: gnome-shell-extension-pop-shell
+    state: present
+  become: yes
+  when: 
+    - gnome_enable_pop_shell | default(true) | bool
+    - ansible_distribution in ['Ubuntu', 'Debian', 'Linux Mint']
+
+- name: Install Pop!_OS shell extension for Fedora
+  package:
+    name: gnome-shell-extension-pop-shell
+    state: present
+    enablerepo: rpmfusion-free
+  become: yes
+  when:
+    - gnome_enable_pop_shell | default(true) | bool
+    - ansible_distribution == 'Fedora'
+
+- name: Install Pop!_OS shell extension for Arch
+  package:
+    name: gnome-shell-extension-pop-shell
+    state: present
+  become: yes
+  when:
+    - gnome_enable_pop_shell | default(true) | bool
+    - ansible_distribution == 'Archlinux'
+
+- name: Ensure GNOME extensions directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/gnome-shell/extensions"
+    state: directory
+    mode: '0755'
+
+- name: Enable Pop!_OS shell extension
+  command: gnome-extensions enable pop-shell@system76.com
+  changed_when: false
+  failed_when: false
+  when: gnome_enable_pop_shell | default(true) | bool
+
+- name: Set GNOME workspace navigation shortcuts for workspaces 1-9
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-{{ item }} \"['<Super>{{item}}']\""
+  loop: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+- name: Set GNOME window move shortcuts for workspaces 1-9
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-{{ item }} \"['<Control><Super>{{item}}']\""
+  loop: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+- name: Clear GNOME open new window for workspaces 1-9
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.shell.keybindings open-new-window-application-{{ item }} \"@as []\""
+  loop: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+- name: Set number of workspaces
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.desktop.wm.preferences num-workspaces 9"
+
+- name: Disable dynamic workspaces
+  ansible.builtin.command:
+    cmd: "gsettings set org.gnome.mutter dynamic-workspaces false"

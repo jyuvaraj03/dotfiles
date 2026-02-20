@@ -1,0 +1,43 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: Install curl
+  dnf:
+    name:
+      - curl
+      - libffi-devel
+      - libyaml-devel
+    state: present
+  become: true
+
+- name: Install rbenv
+  shell: "curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash"
+  args:
+    creates: "{{ ansible_env.HOME }}/.rbenv" # only run if .rbenv does not exist
+
+- name: Add rbenv to PATH in .bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+    state: present
+
+- name: Add rbenv init to .bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: 'eval "$(rbenv init -)"'
+    state: present
+
+- name: Install Ruby using rbenv
+  shell: "source {{ ansible_env.HOME }}/.bashrc && rbenv install {{ ruby_version }}" # sourcing first in order to refresh the PATH
+  args:
+    creates: "{{ ansible_env.HOME }}/.rbenv/versions/{{ ruby_version }}" # only run if ruby is not installed
+
+- name: Set global Ruby version
+  shell: "rbenv global {{ ruby_version }}"
+  args:
+    creates: "{{ ansible_env.HOME }}/.rbenv/version" #only run if version file is not created, or if the version inside the file is not the desired version
+  register: rbenv_global_result
+
+- name: verify global ruby version
+  shell: "rbenv version | grep {{ ruby_version }}"
+  changed_when: false
+  failed_when: rbenv_global_result.rc != 0

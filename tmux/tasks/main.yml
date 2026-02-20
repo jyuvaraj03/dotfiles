@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for tmux
+- name: Install tmux from dnf
+  ansible.builtin.dnf:
+    name: tmux
+    state: present
+  become: true
+
+- name: Install tmux.conf
+  copy:
+    src: files/tmux.conf
+    dest: "{{ lookup('env', 'HOME') }}/.tmux.conf"
+    backup: true

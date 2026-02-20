@@ -1,0 +1,4 @@
+---
+# Variables for GNOME configuration
+gnome_workspace_count: 9
+gnome_enable_pop_shell: true
