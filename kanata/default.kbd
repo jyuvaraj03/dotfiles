@@ -1,0 +1,205 @@
+;; keyd -> kanata conversion
+
+(defcfg
+  ;; Important for tap-hold keys: Kanata needs to process other keys
+  ;; so they interact correctly with tap-hold.
+  process-unmapped-keys yes
+)
+
+;; defsrc is required. We're using deflayermap, so it can be empty.
+(defsrc)
+
+(defvar
+  hold-timeout  200
+  chord-timeout 100
+)
+
+(defalias
+  ;; Caps:
+  ;; tap  -> Escape
+  ;; hold -> Left Control
+  ;;
+  ;; tap-hold-press makes Ctrl activate early when another key is pressed.
+  caps-ctl
+    (tap-hold-press 0 $hold-timeout esc lctl)
+
+  ;; Home-row-ish layer keys.
+  ;;
+  ;; The fork reproduces your [shift], [control], and [control+shift]
+  ;; overrides:
+  ;;
+  ;;   Shift+F -> F immediately
+  ;;   Ctrl+F  -> Ctrl+F immediately
+  ;;
+  ;; instead of waiting 200 ms to decide whether F is the nav layer.
+  f-nav
+    (fork
+      (tap-hold 0 $hold-timeout f (layer-while-held nav))
+      f
+      (lsft rsft lctl rctl))
+
+  d-select-nav
+    (fork
+      (tap-hold 0 $hold-timeout d (layer-while-held select_nav))
+      d
+      (lsft rsft lctl rctl))
+
+  s-select-word-nav
+    (fork
+      (tap-hold 0 $hold-timeout s (layer-while-held select_word_nav))
+      s
+      (lsft rsft lctl rctl))
+
+  a-word-nav
+    (fork
+      (tap-hold 0 $hold-timeout a (layer-while-held word_nav))
+      a
+      (lsft rsft lctl rctl))
+
+  i-tab-jump
+    (tap-hold 0 $hold-timeout i (layer-while-held tab_jump))
+
+  o-workspace-jump
+    (tap-hold 0 $hold-timeout o (layer-while-held workspace_jump))
+
+  ;; ,+. chord participants
+  comma-chord (chord app-switch comma)
+  dot-chord   (chord app-switch dot)
+)
+
+;; Equivalent of:
+;;
+;; [global]
+;; chord_timeout = 100
+;;
+;; [main]
+;; ,+. = M-tab
+;;
+;; "comma" and "dot" here are just arbitrary chord labels.
+(defchords app-switch $chord-timeout
+  (comma)     ,
+  (dot)       .
+  (comma dot) M-tab
+)
+
+
+;; ------------------------------------------------------------------
+;; Base layer
+;; ------------------------------------------------------------------
+
+(deflayermap (base)
+
+  ;; capslock = overload(control, esc)
+  caps @caps-ctl
+
+  ;; esc = capslock
+  esc caps
+
+  ;; f = overloadt(nav, f, 200)
+  ;; d = overloadt(select_nav, d, 200)
+  ;; s = overloadt(select_word_nav, s, 200)
+  ;; a = overloadt(word_nav, a, 200)
+  f @f-nav
+  d @d-select-nav
+  s @s-select-word-nav
+  a @a-word-nav
+
+  ;; i = overloadt(tab_jump, i, 200)
+  ;; o = overloadt(workspace_jump, o, 200)
+  i @i-tab-jump
+  o @o-workspace-jump
+
+  ;; rightalt = nextsong
+  ralt next
+
+  ;; ,+. = M-tab
+  , @comma-chord
+  . @dot-chord
+)
+
+
+;; ------------------------------------------------------------------
+;; [tab_jump]
+;; ------------------------------------------------------------------
+
+(deflayermap (tab_jump)
+  f C-tab
+  a C-S-tab
+
+  ;; Make the layer key itself immediate.
+  i i
+)
+
+
+;; ------------------------------------------------------------------
+;; [nav]
+;; ------------------------------------------------------------------
+
+(deflayermap (nav)
+  h left
+  k up
+  j down
+  l rght
+  y home
+  o end
+)
+
+
+;; ------------------------------------------------------------------
+;; [select_nav]
+;; ------------------------------------------------------------------
+
+(deflayermap (select_nav)
+  h S-left
+  k S-up
+  j S-down
+  l S-rght
+  y S-home
+  o S-end
+)
+
+
+;; ------------------------------------------------------------------
+;; [select_word_nav]
+;; ------------------------------------------------------------------
+
+(deflayermap (select_word_nav)
+  h C-S-left
+  k C-S-up
+  j C-S-down
+  l C-S-rght
+  y C-S-home
+  o C-S-end
+)
+
+
+;; ------------------------------------------------------------------
+;; [word_nav]
+;; ------------------------------------------------------------------
+
+(deflayermap (word_nav)
+  h C-left
+  k C-up
+  j C-down
+  l C-rght
+  y C-home
+  o C-end
+)
+
+
+;; ------------------------------------------------------------------
+;; [workspace_jump]
+;; ------------------------------------------------------------------
+;;
+;; Your pasted keyd config references this layer:
+;;
+;;   o = overloadt(workspace_jump, o, 200)
+;;
+;; but doesn't include a [workspace_jump] section.
+;;
+;; This placeholder makes the config valid. Unspecified keys in a
+;; deflayermap are transparent, so replace this with your actual bindings.
+;;
+(deflayermap (workspace_jump)
+  esc _
+)
