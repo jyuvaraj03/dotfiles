@@ -1,0 +1,25 @@
+---
+- name: Bootstrap macOS dev environment
+  hosts: local
+  gather_facts: true
+  become: false
+  vars:
+    # Versions/paths
+    nvim_version: "0.10.1"
+    yuvim_repo: "git@github.com:jyuvaraj03/yuvim.git"
+    repo_root: "{{ playbook_dir | dirname }}"
+    alacritty_config_src: "{{ repo_root }}/alacritty/.alacritty.toml"
+    tmux_conf_src: "{{ repo_root }}/tmux/.tmux.conf"
+    tmuxinator_sample_src: "{{ repo_root }}/tmuxinator/.sample.yml"
+  roles:
+  - { role: common, tags: ["common"] }
+  - { role: homebrew, tags: ["homebrew"] }
+  - { role: ruby, tags: ["ruby"] }
+  - { role: tmux, tags: ["tmux"] }
+  - { role: neovim, tags: ["neovim"] }
+  - { role: tmuxinator, tags: ["tmuxinator"] }
+  - { role: alacritty, tags: ["alacritty"] }
+  - { role: lazygit, tags: ["lazygit"] }
+  - { role: karabiner, tags: ["karabiner"] }
+    # keyd is Linux only; skipped on macOS by role conditions
+  - { role: keyd, tags: ["keyd"] }

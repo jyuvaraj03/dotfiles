@@ -1,0 +1,21 @@
+---
+- name: Ensure Karabiner-Elements installed (macOS)
+  community.general.homebrew_cask:
+    name: karabiner-elements
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Ensure Karabiner config directory exists
+  file:
+    path: "~/Library/Application Support/Karabiner"
+    state: directory
+    mode: '0755'
+  when: ansible_system == 'Darwin'
+
+- name: Install Karabiner config (symlink to repo's karabiner.json)
+  file:
+    src: "{{ playbook_dir | dirname }}/karabiner/karabiner/karabiner.json"
+    dest: "~/Library/Application Support/Karabiner/karabiner.json"
+    state: link
+    force: true
+  when: ansible_system == 'Darwin'

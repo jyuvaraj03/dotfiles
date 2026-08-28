@@ -1,0 +1,14 @@
+---
+- name: Ensure lazygit installed (macOS via brew)
+  community.general.homebrew:
+    name: lazygit
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Ensure lazygit installed (Debian)
+  apt:
+    name: lazygit
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+  become: true

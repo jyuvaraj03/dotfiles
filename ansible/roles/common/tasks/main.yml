@@ -1,0 +1,33 @@
+# Common tasks shared across platforms
+- name: Check for Xcode Command Line Tools (macOS)
+  command: xcode-select -p
+  register: xcode_clt
+  changed_when: false
+  failed_when: false
+  when: ansible_system == 'Darwin'
+
+- name: Advise installing Xcode Command Line Tools if missing (macOS)
+  debug:
+    msg: "Xcode Command Line Tools not detected. Run: xcode-select --install, then re-run the playbook."
+  when: ansible_system == 'Darwin' and xcode_clt.rc != 0
+
+- name: Check if Homebrew is installed (macOS)
+  command: /usr/bin/which brew
+  register: brew_check
+  changed_when: false
+  failed_when: false
+  when: ansible_system == 'Darwin'
+
+- name: Install Homebrew if missing (macOS)
+  shell: |
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    echo 'eval "$($(brew --prefix)/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$($(brew --prefix)/bin/brew shellenv)"
+  args:
+    executable: /bin/bash
+  when: ansible_system == 'Darwin' and brew_check.rc != 0
+
+- name: Update brew
+  community.general.homebrew:
+    update_homebrew: true
+  when: ansible_system == 'Darwin'

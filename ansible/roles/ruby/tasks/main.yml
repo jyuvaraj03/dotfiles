@@ -1,0 +1,41 @@
+---
+- name: Install Ruby on macOS via Homebrew
+  community.general.homebrew:
+    name: ruby
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Install rbenv on macOS via Homebrew
+  community.general.homebrew:
+    name:
+      - rbenv
+      - ruby-build
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Initialize rbenv in shell profiles (zsh)
+  lineinfile:
+    path: "~/.zshrc"
+    line: '{{ item }}'
+    create: yes
+    insertafter: EOF
+  loop:
+    - 'export PATH="$HOME/.rbenv/bin:$PATH"'
+    - 'eval "$(rbenv init -)"'
+  when: ansible_system == 'Darwin'
+
+- name: Ensure requested Ruby version installed with rbenv (optional)
+  command: rbenv install -s 3.3.5
+  environment:
+    RBENV_ROOT: "{{ ansible_env.HOME }}/.rbenv"
+    PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
+  changed_when: false
+  when: ansible_system == 'Darwin'
+
+- name: Set global Ruby version via rbenv
+  command: rbenv global 3.3.5
+  environment:
+    RBENV_ROOT: "{{ ansible_env.HOME }}/.rbenv"
+    PATH: "{{ ansible_env.HOME }}/.rbenv/bin:{{ ansible_env.PATH }}"
+  changed_when: false
+  when: ansible_system == 'Darwin'

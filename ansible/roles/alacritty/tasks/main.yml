@@ -1,0 +1,33 @@
+---
+- name: Install Alacritty (macOS via Homebrew cask)
+  community.general.homebrew_cask:
+    name: alacritty
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Ensure Alacritty config directory exists
+  file:
+    path: "~/.config/alacritty"
+    state: directory
+    mode: '0755'
+
+- name: Backup existing alacritty.toml if present
+  copy:
+    src: "~/.alacritty.toml"
+    dest: "~/.alacritty.toml.old"
+    remote_src: yes
+    force: yes
+  ignore_errors: yes
+
+- name: Install alacritty config (new path ~/.config/alacritty/alacritty.toml)
+  copy:
+    src: "{{ alacritty_config_src }}"
+    dest: "~/.config/alacritty/alacritty.toml"
+    mode: '0644'
+
+- name: Symlink legacy ~/.alacritty.toml to new location for compatibility
+  file:
+    src: "~/.config/alacritty/alacritty.toml"
+    dest: "~/.alacritty.toml"
+    state: link
+    force: true

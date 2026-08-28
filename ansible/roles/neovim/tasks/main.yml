@@ -1,0 +1,49 @@
+---
+- name: Ensure ripgrep and build tools (Linux)
+  apt:
+    name:
+      - ripgrep
+      - ninja-build
+      - gettext
+      - cmake
+      - unzip
+      - curl
+      - build-essential
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Ensure neovim installed via brew (macOS)
+  community.general.homebrew:
+    name: neovim
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Ensure neovim present via apt (Linux)
+  apt:
+    name: neovim
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Ensure ~/.config exists
+  file:
+    path: "~/.config"
+    state: directory
+    mode: '0755'
+
+- name: Install yuvim config if not present
+  git:
+    repo: "{{ yuvim_repo }}"
+    dest: "~/.config/nvim"
+    version: HEAD
+    update: yes
+    accept_hostkey: yes
+  register: yuvim_clone
+
+- name: Note about SSH requirement
+  debug:
+    msg: "If cloning via SSH fails, set yuvim_repo to https URL or ensure SSH keys are loaded."
+  when: yuvim_clone is failed

@@ -1,0 +1,32 @@
+---
+- name: Ensure Ruby and gem are available (macOS)
+  community.general.homebrew:
+    name: [ 'ruby' ]
+    state: present
+  when: ansible_system == 'Darwin'
+
+- name: Install tmuxinator gem
+  community.general.gem:
+    name: tmuxinator
+    state: present
+    user_install: true
+
+- name: Ensure ~/.tmuxinator exists
+  file:
+    path: "~/.tmuxinator"
+    state: directory
+    mode: '0755'
+
+- name: Backup sample.yml if present
+  copy:
+    src: "~/.tmuxinator/sample.yml"
+    dest: "~/.tmuxinator/sample.yml.old"
+    remote_src: yes
+    force: yes
+  ignore_errors: yes
+
+- name: Install sample tmuxinator config
+  copy:
+    src: "{{ tmuxinator_sample_src }}"
+    dest: "~/.tmuxinator/sample.yml"
+    mode: '0644'

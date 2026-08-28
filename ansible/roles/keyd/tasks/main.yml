@@ -1,0 +1,55 @@
+---
+- name: Install keyd build deps (Debian)
+  apt:
+    name:
+      - git
+      - make
+      - gcc
+      - pkg-config
+      - libevdev-dev
+      - systemd
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+  become: true
+
+- name: Clone keyd
+  git:
+    repo: https://github.com/rvaiya/keyd
+    dest: "~/Applications/keyd"
+    version: HEAD
+    update: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Build and install keyd
+  community.general.make:
+    chdir: "~/Applications/keyd"
+    target: install
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Enable and start keyd
+  systemd:
+    name: keyd
+    enabled: true
+    state: started
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Backup existing /etc/keyd/default.conf if present
+  copy:
+    src: "/etc/keyd/default.conf"
+    dest: "/etc/keyd/default.conf.old"
+    remote_src: yes
+    force: yes
+  ignore_errors: yes
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install keyd default.conf
+  copy:
+    src: "{{ playbook_dir | dirname }}/keyd/default.conf"
+    dest: "/etc/keyd/default.conf"
+    mode: '0644'
+  become: true
+  when: ansible_os_family == 'Debian'
