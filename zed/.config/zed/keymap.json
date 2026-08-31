@@ -1,0 +1,125 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-n": null,
+      "ctrl-m m": "editor::ToggleFocus",
+      "ctrl-m k": "editor::ToggleFocus",
+      "ctrl-m j": "terminal_panel::ToggleFocus",
+      "ctrl-m l": "project_panel::Toggle",
+      "ctrl-m h": "editor::ToggleFocus",
+      "ctrl-m ctrl-m": "workspace::CloseAllDocks",
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-m e": "project_panel::Toggle",
+      "ctrl-m t": "terminal_panel::Toggle",
+      "ctrl-m g": "git_panel::Toggle",
+      "ctrl-m d": "diagnostics::Deploy",
+      "ctrl-m a": "agent::Toggle",
+      "ctrl-m o": "outline_panel::Toggle",
+      "ctrl-m b": "debug_panel::Toggle",
+      "ctrl-m c": "collab_panel::Toggle",
+      "ctrl-m ctrl-m": ["workspace::SendKeystrokes", "alt-1 ctrl-m ctrl-m"],
+      "ctrl-m z": "workspace::ToggleZoom"
+    }
+  },
+  {
+    "context": "!Editor && !Terminal",
+    "bindings": {
+      "ctrl-m e": "project_panel::Toggle",
+      "ctrl-m t": "terminal_panel::Toggle",
+      "ctrl-m g": "git_panel::Toggle",
+      "ctrl-m d": "diagnostics::Deploy",
+      "ctrl-m a": "agent::Toggle",
+      "ctrl-m o": "outline_panel::Toggle",
+      "ctrl-m b": "debug_panel::Toggle",
+      "ctrl-m c": "collab_panel::Toggle",
+      "ctrl-m ctrl-m": ["workspace::SendKeystrokes", "alt-1 ctrl-m ctrl-m"],
+      "ctrl-m z": "workspace::ToggleZoom"
+    }
+  },
+  {
+    "context": "VimControl && !menu",
+    "bindings": {
+      "ctrl-m e": "project_panel::Toggle",
+      "ctrl-m t": "terminal_panel::Toggle",
+      "ctrl-m g": "git_panel::Toggle",
+      "ctrl-m d": "diagnostics::Deploy",
+      "ctrl-m a": "agent::Toggle",
+      "ctrl-m o": "outline_panel::Toggle",
+      "ctrl-m b": "debug_panel::Toggle",
+      "ctrl-m c": "collab_panel::Toggle",
+      "ctrl-m z": "workspace::ToggleZoom"
+    }
+  },
+  {
+    "context": "vim_mode == normal && !menu",
+    "bindings": {
+      ",": "workspace::ActivateNextPane",
+      ";": "workspace::ActivatePreviousPane",
+      "space l": "pane::AlternateFile",
+      // "alt-j": "editor::MoveLineDown",
+      // "alt-k": "editor::MoveLineUp",
+      "space e": "project_panel::Toggle",
+      "space shift-e": "pane::RevealInProjectPanel",
+      "space space": "file_finder::Toggle",
+      "space ,": "file_finder::Toggle",
+      "space s p": "text_finder::Toggle",
+      "space s o": "text_finder::Toggle",
+      "space s h": "command_palette::Toggle",
+      "space s c": "theme_selector::Toggle",
+      "space enter": "workspace::ReopenLastPicker",
+      "space c c": "pane::CloseActiveItem",
+      "space w v": "pane::SplitRight",
+      "space w s": "pane::SplitDown",
+      "ctrl-h": "pane::ActivatePreviousItem",
+      "ctrl-l": "pane::ActivateNextItem",
+      "[ q": "editor::GoToPreviousDiagnostic",
+      "] q": "editor::GoToDiagnostic",
+      "q c": "editor::ToggleDiagnostics",
+      "space f y": "workspace::CopyRelativePath",
+      "g shift-d": "editor::GoToDeclaration",
+      "g d": "editor::GoToDefinition",
+      "shift-k": "editor::Hover",
+      "g shift-i": "editor::GoToImplementation",
+      "g r": "editor::FindAllReferences",
+      "g l": "editor::GoToDiagnostic",
+      "space l f": "editor::Format",
+      "space l a": "editor::ToggleCodeActions",
+      "space l j": "editor::GoToDiagnostic",
+      "space l k": "editor::GoToPreviousDiagnostic",
+      "space l r": "editor::Rename",
+      "space l s": "editor::ShowSignatureHelp",
+      "space l q": "diagnostics::Deploy",
+      "] c": "editor::GoToNextChange",
+      "[ c": "editor::GoToPreviousChange",
+      "space h shift-s": "git::StageAll",
+      "space h shift-r": "git::RestoreFile",
+      "space h p": "git::Diff",
+      "space h b": "git::Blame",
+      "space t b": "editor::ToggleGitBlameInline",
+      "space h d": "git::Diff",
+      "space h shift-d": "git::BranchDiff"
+    }
+  },
+  {
+    "context": "vim_mode == visual && !menu",
+    "bindings": {
+      "shift-j": "editor::MoveLineDown",
+      "shift-k": "editor::MoveLineUp",
+      // "alt-j": "editor::MoveLineDown",
+      // "alt-k": "editor::MoveLineUp"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert && !menu",
+    "bindings": {
+      "ctrl-space": "editor::ShowCompletions",
+      "ctrl-j": "editor::ConfirmCompletion",
+      "ctrl-l": "editor::ShowSignatureHelp"
+    }
+  }
+]
