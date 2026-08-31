@@ -1,5 +1,27 @@
-# Install dependencies
-sudo apt install curl cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew is required. Install it from https://brew.sh, then run this script again." >&2
+    exit 1
+  fi
+  brew install --cask alacritty
+  mkdir -p "$HOME/.config/alacritty"
+  cp "$script_dir/.alacritty.toml" "$HOME/.config/alacritty/alacritty.toml"
+  exit 0
+fi
+
+if ! command -v apt-get >/dev/null 2>&1; then
+  echo "Unsupported platform: this installer supports macOS and apt-based Linux distributions." >&2
+  exit 1
+fi
+
+sudo apt-get update
+sudo apt-get install -y curl cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 
 # Install rustup
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -22,4 +44,4 @@ if [ -f "$HOME/.alacritty.toml" ]; then
   cp $HOME/.alacritty.toml $HOME/.alacritty.toml.old
 fi
 # Install alacritty.toml configs
-cp alacritty/.alacritty.toml $HOME/.alacritty.toml
+cp "$script_dir/.alacritty.toml" "$HOME/.alacritty.toml"
