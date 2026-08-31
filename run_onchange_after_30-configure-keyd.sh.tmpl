@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+{{ if eq .chezmoi.os "linux" }}
+if [[ ! -d /run/systemd/system ]]; then
+  echo "keyd setup skipped: systemd is not running."
+  exit 0
+fi
+
+if [[ "${EUID}" -eq 0 ]]; then
+  sudo_cmd=()
+else
+  sudo_cmd=(sudo)
+fi
+
+if ! command -v keyd >/dev/null 2>&1; then
+  if [[ -f /etc/debian_version ]] && apt-cache show keyd >/dev/null 2>&1; then
+    "${sudo_cmd[@]}" apt-get update
+    "${sudo_cmd[@]}" apt-get install -y keyd
+  else
+    build_dir="$(mktemp -d)"
+    trap 'rm -rf "$build_dir"' EXIT
+    git clone --depth 1 https://github.com/rvaiya/keyd.git "$build_dir/keyd"
+    make -C "$build_dir/keyd"
+    "${sudo_cmd[@]}" make -C "$build_dir/keyd" install
+  fi
+fi
+
+"${sudo_cmd[@]}" install -D -m 0644 /dev/stdin /etc/keyd/default.conf <<'KEYD_CONFIG'
+{{ include "keyd/default.conf" }}
+KEYD_CONFIG
+"${sudo_cmd[@]}" systemctl enable --now keyd
+{{ else }}
+echo "keyd setup skipped: keyd is supported only on systemd Linux."
+{{ end }}

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+{{ if eq .chezmoi.os "darwin" }}
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is required; run bootstrap.sh or install it from https://brew.sh." >&2
+  exit 1
+fi
+
+brew install tmux lazygit neovim ripgrep rbenv ruby-build
+brew install --cask \
+  nikitabobko/tap/aerospace \
+  alacritty \
+  karabiner-elements \
+  zed \
+  font-jetbrains-mono-nerd-font
+
+export PATH="$(brew --prefix rbenv)/bin:$PATH"
+eval "$(rbenv init - bash)"
+rbenv install --skip-existing 3.3.5
+rbenv global 3.3.5
+gem install tmuxinator
+{{ else if eq .chezmoi.os "linux" }}
+if [[ ! -f /etc/debian_version ]]; then
+  echo "Unsupported Linux distribution: only Debian-based systems are supported." >&2
+  exit 1
+fi
+
+sudo apt-get update
+sudo apt-get install -y \
+  alacritty autoconf bison build-essential cmake curl gettext git \
+  libreadline-dev libssl-dev ninja-build pkg-config ripgrep \
+  rbenv ruby-build tmux unzip xclip zlib1g-dev
+
+if ! command -v lazygit >/dev/null 2>&1; then
+  sudo apt-get install -y lazygit
+fi
+
+if ! command -v nvim >/dev/null 2>&1; then
+  build_dir="$(mktemp -d)"
+  trap 'rm -rf "$build_dir"' EXIT
+  curl -fsSL https://github.com/neovim/neovim/archive/refs/tags/v0.10.1.tar.gz | tar -xz -C "$build_dir"
+  make -C "$build_dir/neovim-0.10.1" CMAKE_BUILD_TYPE=Release
+  sudo make -C "$build_dir/neovim-0.10.1" install
+fi
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - bash)"
+rbenv install --skip-existing 3.3.5
+rbenv global 3.3.5
+gem install tmuxinator
+{{ else }}
+echo "Unsupported operating system: {{ .chezmoi.os }}" >&2
+exit 1
+{{ end }}
