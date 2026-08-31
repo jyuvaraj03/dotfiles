@@ -13,8 +13,18 @@ brew install --cask \
   nikitabobko/tap/aerospace \
   alacritty \
   karabiner-elements \
-  zed \
   font-jetbrains-mono-nerd-font
+
+# Zed may have been installed directly before this bootstrap ran. Homebrew
+# refuses to overwrite an existing application bundle, so leave it in place
+# rather than failing the entire setup.
+if brew list --cask zed >/dev/null 2>&1; then
+  :
+elif [[ -d /Applications/Zed.app ]]; then
+  echo "Zed is already installed at /Applications/Zed.app; skipping Homebrew cask install."
+else
+  brew install --cask zed
+fi
 
 export PATH="$(brew --prefix rbenv)/bin:$PATH"
 eval "$(rbenv init - bash)"
