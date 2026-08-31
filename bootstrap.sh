@@ -32,4 +32,14 @@ case "$(uname -s)" in
     ;;
 esac
 
-chezmoi init --apply --branch "$branch" "$repository"
+source_dir="$(chezmoi source-path)"
+
+if [[ -d "$source_dir/.git" ]]; then
+  git -C "$source_dir" fetch origin "$branch"
+  git -C "$source_dir" checkout --track "origin/$branch" 2>/dev/null \
+    || git -C "$source_dir" checkout "$branch"
+  git -C "$source_dir" pull --ff-only origin "$branch"
+  chezmoi apply
+else
+  chezmoi init --apply --branch "$branch" "$repository"
+fi

@@ -12,6 +12,8 @@ curl -fsSL https://raw.githubusercontent.com/jyuvaraj03/dotfiles/chezmoi/bootstr
 
 `chezmoi apply` installs the configured packages and deploys the managed files. On a systemd Linux host it also installs and enables `keyd`, so it may prompt for `sudo`.
 
+If you previously initialized chezmoi from this repository's `main` branch, run the bootstrap command again after the `chezmoi` branch is pushed. It switches the existing source checkout to the migration branch before applying it.
+
 ## Daily workflow
 
 ```sh
